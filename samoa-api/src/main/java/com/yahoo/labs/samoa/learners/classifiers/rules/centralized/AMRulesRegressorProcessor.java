@@ -27,7 +27,6 @@ import java.util.List;
 import com.yahoo.labs.samoa.core.ContentEvent;
 import com.yahoo.labs.samoa.core.Processor;
 import com.yahoo.labs.samoa.instances.Instance;
-import com.yahoo.labs.samoa.instances.Instances;
 import com.yahoo.labs.samoa.learners.InstanceContentEvent;
 import com.yahoo.labs.samoa.learners.ResultContentEvent;
 import com.yahoo.labs.samoa.learners.classifiers.rules.common.ActiveRule;
@@ -399,9 +398,9 @@ public class AMRulesRegressorProcessor implements Processor {
     private FIMTDDNumericAttributeClassLimitObserver numericObserver;
     private ErrorWeightedVote voteType;
 
-    private Instances dataset;
+    private List<Instance> dataset;
 
-    public Builder(Instances dataset) {
+    public Builder(List<Instance> dataset) {
       this.dataset = dataset;
     }
 

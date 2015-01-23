@@ -158,7 +158,7 @@ public abstract class RuleRegressionNode implements Serializable {
    */
   public double computeError(Instance instance) {
     double normalizedPrediction = getNormalizedPrediction(instance);
-    double normalizedClassValue = normalize(instance.classValue());
+    double normalizedClassValue = normalize(instance.getLabel());
     return Math.abs(normalizedClassValue - normalizedPrediction);
   }
 
@@ -210,15 +210,14 @@ public abstract class RuleRegressionNode implements Serializable {
       double N = 0.0;
       double anomaly;
 
-      for (int x = 0; x < instance.numAttributes() - 1; x++) {
+      for (int x = 0; x < instance.getNumAttributes() ; x++) {
         // Perceptron is initialized each rule.
         // this is a local anomaly.
-        int instAttIndex = modelAttIndexToInstanceAttIndex(x, instance);
         attribSum = this.perceptron.perceptronattributeStatistics.getValue(x);
         attribSquaredSum = this.perceptron.squaredperceptronattributeStatistics.getValue(x);
         double mean = attribSum / perceptronIntancesSeen;
         double sd = computeSD(attribSquaredSum, attribSum, perceptronIntancesSeen);
-        double probability = computeProbability(mean, sd, instance.value(instAttIndex));
+        double probability = computeProbability(mean, sd, instance.getAttribute(x));
 
         if (probability > 0.0) {
           D = D + Math.abs(Math.log(probability));
@@ -279,16 +278,5 @@ public abstract class RuleRegressionNode implements Serializable {
     return 0.0;
   }
 
-  /**
-   * Gets the index of the attribute in the instance, given the index of the attribute in the learner.
-   * 
-   * @param index
-   *          the index of the attribute in the learner
-   * @param inst
-   *          the instance
-   * @return the index in the instance
-   */
-  protected static int modelAttIndexToInstanceAttIndex(int index, Instance inst) {
-    return index <= inst.classIndex() ? index : index + 1;
-  }
+
 }

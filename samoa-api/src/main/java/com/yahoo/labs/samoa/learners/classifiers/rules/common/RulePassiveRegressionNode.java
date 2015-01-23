@@ -63,9 +63,9 @@ public class RulePassiveRegressionNode extends RuleRegressionNode implements Rul
     // number of instances passing through the node
     nodeStatistics.addToValue(0, 1);
     // sum of y values
-    nodeStatistics.addToValue(1, inst.classValue());
+    nodeStatistics.addToValue(1, inst.getLabel());
     // sum of squared y values
-    nodeStatistics.addToValue(2, inst.classValue() * inst.classValue());
+    nodeStatistics.addToValue(2, inst.getLabel() * inst.getLabel());
 
     this.perceptron.trainOnInstance(inst);
     if (this.predictionFunction != 1) { // Train target mean if prediction function is not Perceptron

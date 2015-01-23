@@ -60,8 +60,8 @@ public class BasicRegressionPerformanceEvaluator extends AbstractMOAObject
 
   @Override
   public void addResult(Instance inst, double[] prediction) {
-    double weight = inst.weight();
-    double classValue = inst.classValue();
+    double weight = inst.getWeight();
+    double classValue = inst.getLabel();
     if (weight > 0.0) {
       if (prediction.length > 0) {
         double meanTarget = this.weightObserved != 0 ?

@@ -21,6 +21,8 @@ package com.yahoo.labs.samoa.learners.classifiers.rules;
  */
 
 import com.google.common.collect.ImmutableSet;
+
+import java.util.List;
 import java.util.Set;
 
 import com.github.javacliparser.Configurable;
@@ -30,7 +32,7 @@ import com.github.javacliparser.FloatOption;
 import com.github.javacliparser.IntOption;
 import com.github.javacliparser.MultiChoiceOption;
 import com.yahoo.labs.samoa.core.Processor;
-import com.yahoo.labs.samoa.instances.Instances;
+import com.yahoo.labs.samoa.instances.Instance;
 import com.yahoo.labs.samoa.learners.RegressionLearner;
 import com.yahoo.labs.samoa.learners.classifiers.rules.centralized.AMRulesRegressorProcessor;
 import com.yahoo.labs.samoa.moa.classifiers.rules.core.attributeclassobservers.FIMTDDNumericAttributeClassLimitObserver;
@@ -137,7 +139,7 @@ public class AMRulesRegressor implements RegressionLearner, Configurable {
   private Stream resultStream;
 
   @Override
-  public void init(TopologyBuilder topologyBuilder, Instances dataset, int parallelism) {
+  public void init(TopologyBuilder topologyBuilder, List<Instance> dataset, int parallelism) {
     this.processor = new AMRulesRegressorProcessor.Builder(dataset)
         .threshold(pageHinckleyThresholdOption.getValue())
         .alpha(pageHinckleyAlphaOption.getValue())

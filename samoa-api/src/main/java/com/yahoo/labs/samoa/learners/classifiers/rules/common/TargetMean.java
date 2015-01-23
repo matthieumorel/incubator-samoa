@@ -105,7 +105,7 @@ public class TargetMean extends AbstractClassifier implements Regressor {
   public void trainOnInstanceImpl(Instance inst) {
     updateAccumulatedError(inst);
     ++this.n;
-    this.sum += inst.classValue();
+    this.sum += inst.getLabel();
   }
 
   protected void updateAccumulatedError(Instance inst) {
@@ -113,7 +113,7 @@ public class TargetMean extends AbstractClassifier implements Regressor {
     nError = 1 + fadingErrorFactor * nError;
     if (n > 0)
       mean = sum / n;
-    errorSum = Math.abs(inst.classValue() - mean) + fadingErrorFactor * errorSum;
+    errorSum = Math.abs(inst.getLabel() - mean) + fadingErrorFactor * errorSum;
   }
 
   @Override

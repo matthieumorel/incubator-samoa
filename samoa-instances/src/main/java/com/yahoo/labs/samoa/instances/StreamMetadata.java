@@ -20,34 +20,26 @@ package com.yahoo.labs.samoa.instances;
  * #L%
  */
 
-import java.io.Serializable;
-import java.util.Map;
+import java.util.List;
 
-/**
- * Immutable instance
- */
-public interface Instance extends Serializable {
+public class StreamMetadata {
 
-  double getLabel();
+    String className;
+    List<String> classLabels;
 
-  /**
-   *
-   * @return total number of attributes (regardless of whether they are present in the instance)
-   */
-  int getNumAttributes();
 
-  /**
-   * @return the values of attributes. For a sparse implementation, absent values are set to zero.
-   */
-  double[] getAttributes();
 
-  double getWeight();
 
-  double getAttribute(int index);
+    public String getClassName() {
+        if (className== null) {
+            return "[class]";
+        }
+        return "[class:" + className + "]";
+    }
 
-  boolean isNumeric(int attributeIndex);
+    public String getClassLabel(int index) {
+        return classLabels.get(index);
+    }
 
-  boolean isNominal(int attributeIndex);
 
-  boolean isDate(int attributeIndex);
 }

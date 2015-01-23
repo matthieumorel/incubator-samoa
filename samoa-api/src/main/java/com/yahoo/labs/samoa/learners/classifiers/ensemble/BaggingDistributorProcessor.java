@@ -25,6 +25,8 @@ package com.yahoo.labs.samoa.learners.classifiers.ensemble;
  */
 
 import com.yahoo.labs.samoa.core.ContentEvent;
+import com.yahoo.labs.samoa.instances.AbstractInstance;
+import com.yahoo.labs.samoa.instances.Utils;
 import com.yahoo.labs.samoa.learners.InstanceContentEvent;
 import com.yahoo.labs.samoa.core.Processor;
 import com.yahoo.labs.samoa.instances.Instance;
@@ -102,8 +104,8 @@ public class BaggingDistributorProcessor implements Processor {
     for (int i = 0; i < sizeEnsemble; i++) {
       int k = MiscUtils.poisson(1.0, this.random);
       if (k > 0) {
-        Instance weightedInst = trainInst.copy();
-        weightedInst.setWeight(trainInst.weight() * k);
+        Instance weightedInst = Utils.newBuilderFrom(trainInst).build();
+        weightedInst.setWeight(trainInst.getWeight() * k);
         InstanceContentEvent instanceContentEvent = new InstanceContentEvent(
             inEvent.getInstanceIndex(), weightedInst, true, false);
         instanceContentEvent.setClassifierIndex(i);

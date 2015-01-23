@@ -28,7 +28,9 @@ import java.util.Map;
 import java.util.Random;
 
 import com.yahoo.labs.samoa.core.ContentEvent;
+import com.yahoo.labs.samoa.instances.AbstractInstance;
 import com.yahoo.labs.samoa.instances.Instance;
+import com.yahoo.labs.samoa.instances.InstanceBuilder;
 import com.yahoo.labs.samoa.learners.InstanceContentEvent;
 import com.yahoo.labs.samoa.learners.ResultContentEvent;
 import com.yahoo.labs.samoa.moa.core.DoubleVector;
@@ -109,7 +111,7 @@ public class BoostingPredictionCombinerProcessor extends PredictionCombinerProce
 
   private boolean correctlyClassifies(int i, Instance inst, int instanceIndex) {
     int predictedClass = (int) mapPredictions.get(instanceIndex).getValue(i);
-    return predictedClass == (int) inst.classValue();
+    return predictedClass == (int) inst.getLabel();
   }
 
   protected Map<Integer, DoubleVector> mapPredictions;
@@ -134,8 +136,9 @@ public class BoostingPredictionCombinerProcessor extends PredictionCombinerProce
       double k = lambda_d;
       Instance inst = inEvent.getInstance();
       if (k > 0.0) {
-        Instance weightedInst = inst.copy();
-        weightedInst.setWeight(inst.weight() * k);
+        InstanceBuilder builder = com.yahoo.labs.samoa.instances.Utils.newBuilderFrom(inst);
+        builder.setWeight(inst.getWeight()*k);
+        Instance weightedInst = builder.build();
         // this.ensemble[i].trainOnInstance(weightedInst);
         InstanceContentEvent instanceContentEvent = new InstanceContentEvent(
             inEvent.getInstanceIndex(), weightedInst, true, false);

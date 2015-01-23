@@ -22,16 +22,15 @@ package com.yahoo.labs.samoa.moa.clusterers;
 
 import com.yahoo.labs.samoa.moa.MOAObject;
 import com.yahoo.labs.samoa.moa.cluster.Clustering;
-import com.yahoo.labs.samoa.instances.InstancesHeader;
 import com.yahoo.labs.samoa.moa.core.Measurement;
 import com.yahoo.labs.samoa.moa.options.OptionHandler;
 import com.yahoo.labs.samoa.instances.Instance;
 
 public interface Clusterer extends MOAObject, OptionHandler {
 
-  public void setModelContext(InstancesHeader ih);
-
-  public InstancesHeader getModelContext();
+//  public void setModelContext(InstancesHeader ih);
+//
+//  public InstancesHeader getModelContext();
 
   public boolean isRandomizable();
 

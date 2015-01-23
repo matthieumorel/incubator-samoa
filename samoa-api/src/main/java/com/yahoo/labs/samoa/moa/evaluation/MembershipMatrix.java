@@ -50,7 +50,7 @@ public class MembershipMatrix {
     total_entries = 0;
     total_class_entries = points.size();
     for (int p = 0; p < points.size(); p++) {
-      int worklabel = classmap.get((int) points.get(p).classValue());
+      int worklabel = classmap.get((int) points.get(p).getLabel());
       // real class distribution
       class_distribution[worklabel]++;
       boolean covered = false;

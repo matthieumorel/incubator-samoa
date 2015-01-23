@@ -20,7 +20,6 @@ package com.yahoo.labs.samoa.moa.streams;
  * #L%
  */
 
-import com.yahoo.labs.samoa.instances.InstancesHeader;
 import com.yahoo.labs.samoa.moa.MOAObject;
 import com.yahoo.labs.samoa.moa.core.Example;
 
@@ -32,13 +31,13 @@ import com.yahoo.labs.samoa.moa.core.Example;
  */
 public interface ExampleStream<E extends Example> extends MOAObject {
 
-  /**
-   * Gets the header of this stream. This is useful to know attributes and classes. InstancesHeader is an extension of
-   * weka.Instances.
-   * 
-   * @return the header of this stream
-   */
-  public InstancesHeader getHeader();
+//  /**
+//   * Gets the header of this stream. This is useful to know attributes and classes. InstancesHeader is an extension of
+//   * weka.Instances.
+//   *
+//   * @return the header of this stream
+//   */
+//  public InstancesHeader getHeader();
 
   /**
    * Gets the estimated number of remaining instances in this stream

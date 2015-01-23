@@ -30,7 +30,6 @@ import com.yahoo.labs.samoa.core.EntranceProcessor;
 import com.yahoo.labs.samoa.core.Processor;
 import com.yahoo.labs.samoa.evaluation.ClusteringEvaluationContentEvent;
 import com.yahoo.labs.samoa.instances.Instance;
-import com.yahoo.labs.samoa.instances.Instances;
 import com.yahoo.labs.samoa.learners.clusterers.ClusteringContentEvent;
 import com.yahoo.labs.samoa.moa.cluster.Clustering;
 import com.yahoo.labs.samoa.moa.core.DataPoint;
@@ -144,9 +143,9 @@ public final class ClusteringEntranceProcessor implements EntranceProcessor {
     firstInstance = streamSource.nextInstance().getData();
   }
 
-  public Instances getDataset() {
-    return firstInstance.dataset();
-  }
+//  public Instances getDataset() {
+//    return firstInstance.dataset();
+//  }
 
   private Instance nextInstance() {
     if (this.isInited) {

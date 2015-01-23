@@ -25,7 +25,6 @@ package com.yahoo.labs.samoa.learners;
  */
 
 import com.yahoo.labs.samoa.core.ContentEvent;
-import com.yahoo.labs.samoa.core.SerializableInstance;
 import net.jcip.annotations.Immutable;
 import com.yahoo.labs.samoa.instances.Instance;
 
@@ -44,7 +43,7 @@ final public class InstanceContentEvent implements ContentEvent {
   private long instanceIndex;
   private int classifierIndex;
   private int evaluationIndex;
-  private SerializableInstance instance;
+  private Instance instance;
   private boolean isTraining;
   private boolean isTesting;
   private boolean isLast = false;
@@ -66,7 +65,7 @@ final public class InstanceContentEvent implements ContentEvent {
   public InstanceContentEvent(long index, Instance instance,
       boolean isTraining, boolean isTesting) {
     if (instance != null) {
-      this.instance = new SerializableInstance(instance);
+      this.instance = instance;
     }
     this.instanceIndex = index;
     this.isTraining = isTraining;
@@ -98,7 +97,7 @@ final public class InstanceContentEvent implements ContentEvent {
    */
   public int getClassId() {
     // return classId;
-    return (int) instance.classValue();
+    return (int) instance.getLabel();
   }
 
   /**

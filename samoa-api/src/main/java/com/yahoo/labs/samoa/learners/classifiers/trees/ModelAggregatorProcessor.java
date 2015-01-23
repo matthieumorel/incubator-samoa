@@ -39,8 +39,6 @@ import org.slf4j.LoggerFactory;
 import com.yahoo.labs.samoa.core.ContentEvent;
 import com.yahoo.labs.samoa.core.Processor;
 import com.yahoo.labs.samoa.instances.Instance;
-import com.yahoo.labs.samoa.instances.Instances;
-import com.yahoo.labs.samoa.instances.InstancesHeader;
 import com.yahoo.labs.samoa.learners.InstanceContentEvent;
 import com.yahoo.labs.samoa.learners.InstancesContentEvent;
 import com.yahoo.labs.samoa.learners.ResultContentEvent;
@@ -78,7 +76,7 @@ final class ModelAggregatorProcessor implements Processor {
   private int decisionNodeCount;
   private boolean growthAllowed;
 
-  private final Instances dataset;
+  private final List<Instance> dataset;
 
   // to support concurrent split
   private long splitId;
@@ -110,8 +108,8 @@ final class ModelAggregatorProcessor implements Processor {
     this.timeOut = builder.timeOut;
     this.changeDetector = builder.changeDetector;
 
-    InstancesHeader ih = new InstancesHeader(dataset);
-    this.setModelContext(ih);
+//    InstancesHeader ih = new InstancesHeader(dataset);
+//    this.setModelContext(ih);
   }
 
   @Override
@@ -142,7 +140,8 @@ final class ModelAggregatorProcessor implements Processor {
           ActiveLearningNode leafNode = (ActiveLearningNode) foundNode.getNode();
           AttributeBatchContentEvent[] abce = leafNode.getAttributeBatchContentEvent();
           if (abce != null) {
-            for (int i = 0; i < this.dataset.numAttributes() - 1; i++) {
+            int numAttributes = this.dataset.iterator().next().getNumAttributes();
+            for (int i = 0; i < numAttributes; i++) {
               this.sendToAttributeStream(abce[i]);
             }
           }
@@ -265,7 +264,7 @@ final class ModelAggregatorProcessor implements Processor {
   }
 
   private ResultContentEvent newResultContentEvent(double[] prediction, Instance inst, InstancesContentEvent inEvent) {
-    ResultContentEvent rce = new ResultContentEvent(inEvent.getInstanceIndex(), inst, (int) inst.classValue(),
+    ResultContentEvent rce = new ResultContentEvent(inEvent.getInstanceIndex(), inst, (int) inst.getLabel(),
         prediction, inEvent.isLastEvent());
     rce.setClassifierIndex(this.processorId);
     rce.setEvaluationIndex(inEvent.getEvaluationIndex());
@@ -309,7 +308,7 @@ final class ModelAggregatorProcessor implements Processor {
 
   private void processInstance(Instance inst, InstancesContentEvent instContentEvent, boolean isTesting,
       boolean isTraining) {
-    inst.setDataset(this.dataset);
+//    inst.setDataset(this.dataset);
     // Check the instance whether it is used for testing or training
     // boolean testAndTrain = isTraining; //Train after testing
     double[] prediction = null;
@@ -339,7 +338,7 @@ final class ModelAggregatorProcessor implements Processor {
   }
 
   private boolean correctlyClassifies(Instance inst, double[] prediction) {
-    return maxIndex(prediction) == (int) inst.classValue();
+    return maxIndex(prediction) == (int) inst.getLabel();
   }
 
   private void resetLearning() {
@@ -590,22 +589,22 @@ final class ModelAggregatorProcessor implements Processor {
     return new ActiveLearningNode(initialClassObservations, parallelismHint);
   }
 
-  /**
-   * Helper method to set the model context, i.e. how many attributes they are and what is the class index
-   * 
-   * @param ih
-   */
-  private void setModelContext(InstancesHeader ih) {
-    // TODO possibly refactored
-    if ((ih != null) && (ih.classIndex() < 0)) {
-      throw new IllegalArgumentException(
-          "Context for a classifier must include a class to learn");
-    }
-    // TODO: check flag for checking whether training has started or not
-
-    // model context is used to describe the model
-    logger.trace("Model context: {}", ih.toString());
-  }
+//  /**
+//   * Helper method to set the model context, i.e. how many attributes they are and what is the class index
+//   *
+//   * @param ih
+//   */
+//  private void setModelContext(InstancesHeader ih) {
+//    // TODO possibly refactored
+//    if ((ih != null) && (ih.classIndex() < 0)) {
+//      throw new IllegalArgumentException(
+//          "Context for a classifier must include a class to learn");
+//    }
+//    // TODO: check flag for checking whether training has started or not
+//
+//    // model context is used to describe the model
+//    logger.trace("Model context: {}", ih.toString());
+//  }
 
   private static double computeHoeffdingBound(double range, double confidence, double n) {
     return Math.sqrt((Math.pow(range, 2.0) * Math.log(1.0 / confidence)) / (2.0 * n));
@@ -679,7 +678,7 @@ final class ModelAggregatorProcessor implements Processor {
   static class Builder {
 
     // required parameters
-    private final Instances dataset;
+    private final List<Instance> dataset;
 
     // default values
     private SplitCriterion splitCriterion = new InfoGainSplitCriterion();
@@ -690,7 +689,7 @@ final class ModelAggregatorProcessor implements Processor {
     private long timeOut = 30;
     private ChangeDetector changeDetector = null;
 
-    Builder(Instances dataset) {
+    Builder(List<Instance> dataset) {
       this.dataset = dataset;
     }
 

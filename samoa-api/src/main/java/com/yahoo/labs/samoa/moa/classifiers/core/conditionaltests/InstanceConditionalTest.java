@@ -21,7 +21,6 @@ package com.yahoo.labs.samoa.moa.classifiers.core.conditionaltests;
  */
 
 import com.yahoo.labs.samoa.moa.AbstractMOAObject;
-import com.yahoo.labs.samoa.instances.InstancesHeader;
 import com.yahoo.labs.samoa.instances.Instance;
 
 /**
@@ -58,17 +57,17 @@ public abstract class InstanceConditionalTest extends AbstractMOAObject {
    */
   public abstract int maxBranches();
 
-  /**
-   * Gets the text that describes the condition of a branch. It is used to describe the branch.
-   * 
-   * @param branch
-   *          the number of the branch to describe
-   * @param context
-   *          the context or header of the data stream
-   * @return the text that describes the condition of the branch
-   */
-  public abstract String describeConditionForBranch(int branch,
-      InstancesHeader context);
+//  /**
+//   * Gets the text that describes the condition of a branch. It is used to describe the branch.
+//   *
+//   * @param branch
+//   *          the number of the branch to describe
+//   * @param context
+//   *          the context or header of the data stream
+//   * @return the text that describes the condition of the branch
+//   */
+//  public abstract String describeConditionForBranch(int branch,
+//      InstancesHeader context);
 
   /**
    * Returns an array with the attributes that the test depends on.

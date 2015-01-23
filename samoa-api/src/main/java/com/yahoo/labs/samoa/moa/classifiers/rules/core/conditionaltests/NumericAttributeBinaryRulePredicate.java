@@ -43,6 +43,7 @@ import com.yahoo.labs.samoa.instances.Instance;
 import com.yahoo.labs.samoa.instances.InstancesHeader;
 import com.yahoo.labs.samoa.moa.classifiers.core.conditionaltests.InstanceConditionalBinaryTest;
 import com.yahoo.labs.samoa.moa.classifiers.rules.core.Predicate;
+import com.yahoo.labs.samoa.moa.core.Utils;
 
 /**
  * Numeric binary conditional test for instances to use to split nodes in AMRules.
@@ -78,10 +79,10 @@ public class NumericAttributeBinaryRulePredicate extends InstanceConditionalBina
   public int branchForInstance(Instance inst) {
     int instAttIndex = this.attIndex < inst.classIndex() ? this.attIndex
         : this.attIndex + 1;
-    if (inst.isMissing(instAttIndex)) {
+    if (com.yahoo.labs.samoa.instances.Utils.isMissing(inst, instAttIndex)) {
       return -1;
     }
-    double v = inst.value(instAttIndex);
+    double v = inst.getAttribute(instAttIndex);
     int ret = 0;
     switch (this.operator) {
     case 0:
@@ -96,22 +97,22 @@ public class NumericAttributeBinaryRulePredicate extends InstanceConditionalBina
     return ret;
   }
 
-  /**
-     *
-     */
-  @Override
-  public String describeConditionForBranch(int branch, InstancesHeader context) {
-    if ((branch >= 0) && (branch <= 2)) {
-      String compareChar = (branch == 0) ? "=" : (branch == 1) ? "<=" : ">";
-      return InstancesHeader.getAttributeNameString(context,
-          this.attIndex)
-          + ' '
-          + compareChar
-          + InstancesHeader.getNumericValueString(context,
-              this.attIndex, this.attValue);
-    }
-    throw new IndexOutOfBoundsException();
-  }
+//  /**
+//     *
+//     */
+//  @Override
+//  public String describeConditionForBranch(int branch, InstancesHeader context) {
+//    if ((branch >= 0) && (branch <= 2)) {
+//      String compareChar = (branch == 0) ? "=" : (branch == 1) ? "<=" : ">";
+//      return InstancesHeader.getAttributeNameString(context,
+//          this.attIndex)
+//          + ' '
+//          + compareChar
+//          + InstancesHeader.getNumericValueString(context,
+//              this.attIndex, this.attValue);
+//    }
+//    throw new IndexOutOfBoundsException();
+//  }
 
   /**
      *

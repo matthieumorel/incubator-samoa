@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.yahoo.labs.samoa.instances;
+package com.yahoo.labs.samoa.instances.arff;
 
 /*
  * #%L
@@ -24,6 +24,8 @@ package com.yahoo.labs.samoa.instances;
  * #L%
  */
 
+import com.yahoo.labs.samoa.instances.Attribute;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -31,7 +33,7 @@ import java.util.List;
  * 
  * @author abifet
  */
-public class InstanceInformation implements Serializable {
+public class ArffMetadata implements Serializable {
 
   // Should we split Instances as a List of Instances, and InformationInstances
 
@@ -43,18 +45,18 @@ public class InstanceInformation implements Serializable {
 
   protected int classIndex;
 
-  public InstanceInformation(InstanceInformation chunk) {
+  public ArffMetadata(ArffMetadata chunk) {
     this.relationName = chunk.relationName;
     this.attributes = chunk.attributes;
     this.classIndex = chunk.classIndex;
   }
 
-  public InstanceInformation(String st, List<Attribute> v) {
+  public ArffMetadata(String st, List<Attribute> v) {
     this.relationName = st;
     this.attributes = v;
   }
 
-  public InstanceInformation() {
+  public ArffMetadata() {
     this.relationName = null;
     this.attributes = null;
   }

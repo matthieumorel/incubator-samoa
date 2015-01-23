@@ -21,10 +21,10 @@ package com.yahoo.labs.samoa.learners.classifiers;
  */
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 import com.yahoo.labs.samoa.instances.Instance;
-import com.yahoo.labs.samoa.instances.Instances;
 
 /**
  * Learner interface for non-distributed learners.
@@ -71,6 +71,6 @@ public interface LocalLearner extends Serializable {
    *          the dataset that contains the information
    */
   @Deprecated
-  public void setDataset(Instances dataset);
+  public void setDataset(List<Instance> dataset);
 
 }

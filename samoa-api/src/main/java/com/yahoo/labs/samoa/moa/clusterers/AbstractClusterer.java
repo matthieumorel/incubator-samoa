@@ -44,7 +44,7 @@ public abstract class AbstractClusterer extends AbstractOptionHandler
     return "MOA Clusterer: " + getClass().getCanonicalName();
   }
 
-  protected InstancesHeader modelContext;
+//  protected InstancesHeader modelContext;
 
   protected double trainingWeightSeenByModel = 0.0;
 
@@ -83,23 +83,23 @@ public abstract class AbstractClusterer extends AbstractOptionHandler
     clustering = new Clustering();
   }
 
-  public void setModelContext(InstancesHeader ih) {
-    if ((ih != null) && (ih.classIndex() < 0)) {
-      throw new IllegalArgumentException(
-          "Context for a Clusterer must include a class to learn");
-    }
-    if (trainingHasStarted()
-        && (this.modelContext != null)
-        && ((ih == null) || !contextIsCompatible(this.modelContext, ih))) {
-      throw new IllegalArgumentException(
-          "New context is not compatible with existing model");
-    }
-    this.modelContext = ih;
-  }
-
-  public InstancesHeader getModelContext() {
-    return this.modelContext;
-  }
+//  public void setModelContext(InstancesHeader ih) {
+//    if ((ih != null) && (ih.classIndex() < 0)) {
+//      throw new IllegalArgumentException(
+//          "Context for a Clusterer must include a class to learn");
+//    }
+//    if (trainingHasStarted()
+//        && (this.modelContext != null)
+//        && ((ih == null) || !contextIsCompatible(this.modelContext, ih))) {
+//      throw new IllegalArgumentException(
+//          "New context is not compatible with existing model");
+//    }
+//    this.modelContext = ih;
+//  }
+//
+//  public InstancesHeader getModelContext() {
+//    return this.modelContext;
+//  }
 
   public void setRandomSeed(int s) {
     this.randomSeed = s;
@@ -126,8 +126,8 @@ public abstract class AbstractClusterer extends AbstractOptionHandler
   }
 
   public void trainOnInstance(Instance inst) {
-    if (inst.weight() > 0.0) {
-      this.trainingWeightSeenByModel += inst.weight();
+    if (inst.getWeight() > 0.0) {
+      this.trainingWeightSeenByModel += inst.getWeight();
       trainOnInstanceImpl(inst);
     }
   }
@@ -193,74 +193,74 @@ public abstract class AbstractClusterer extends AbstractOptionHandler
   // .classValue();
   // }
 
-  public String getClassNameString() {
-    return InstancesHeader.getClassNameString(this.modelContext);
-  }
-
-  public String getClassLabelString(int classLabelIndex) {
-    return InstancesHeader.getClassLabelString(this.modelContext,
-        classLabelIndex);
-  }
-
-  public String getAttributeNameString(int attIndex) {
-    return InstancesHeader.getAttributeNameString(this.modelContext,
-        attIndex);
-  }
-
-  public String getNominalValueString(int attIndex, int valIndex) {
-    return InstancesHeader.getNominalValueString(this.modelContext,
-        attIndex, valIndex);
-  }
-
-  // originalContext notnull
-  // newContext notnull
-  public static boolean contextIsCompatible(InstancesHeader originalContext,
-      InstancesHeader newContext) {
-    // rule 1: num classes can increase but never decrease
-    // rule 2: num attributes can increase but never decrease
-    // rule 3: num nominal attribute values can increase but never decrease
-    // rule 4: attribute types must stay in the same order (although class
-    // can
-    // move; is always skipped over)
-    // attribute names are free to change, but should always still represent
-    // the original attributes
-    if (newContext.numClasses() < originalContext.numClasses()) {
-      return false; // rule 1
-    }
-    if (newContext.numAttributes() < originalContext.numAttributes()) {
-      return false; // rule 2
-    }
-    int oPos = 0;
-    int nPos = 0;
-    while (oPos < originalContext.numAttributes()) {
-      if (oPos == originalContext.classIndex()) {
-        oPos++;
-        if (!(oPos < originalContext.numAttributes())) {
-          break;
-        }
-      }
-      if (nPos == newContext.classIndex()) {
-        nPos++;
-      }
-      if (originalContext.attribute(oPos).isNominal()) {
-        if (!newContext.attribute(nPos).isNominal()) {
-          return false; // rule 4
-        }
-        if (newContext.attribute(nPos).numValues() < originalContext
-            .attribute(oPos).numValues()) {
-          return false; // rule 3
-        }
-      } else {
-        assert (originalContext.attribute(oPos).isNumeric());
-        if (!newContext.attribute(nPos).isNumeric()) {
-          return false; // rule 4
-        }
-      }
-      oPos++;
-      nPos++;
-    }
-    return true; // all checks clear
-  }
+//  public String getClassNameString() {
+//    return InstancesHeader.getClassNameString(this.modelContext);
+//  }
+//
+//  public String getClassLabelString(int classLabelIndex) {
+//    return InstancesHeader.getClassLabelString(this.modelContext,
+//        classLabelIndex);
+//  }
+//
+//  public String getAttributeNameString(int attIndex) {
+//    return InstancesHeader.getAttributeNameString(this.modelContext,
+//        attIndex);
+//  }
+//
+//  public String getNominalValueString(int attIndex, int valIndex) {
+//    return InstancesHeader.getNominalValueString(this.modelContext,
+//        attIndex, valIndex);
+//  }
+//
+//  // originalContext notnull
+//  // newContext notnull
+//  public static boolean contextIsCompatible(InstancesHeader originalContext,
+//      InstancesHeader newContext) {
+//    // rule 1: num classes can increase but never decrease
+//    // rule 2: num attributes can increase but never decrease
+//    // rule 3: num nominal attribute values can increase but never decrease
+//    // rule 4: attribute types must stay in the same order (although class
+//    // can
+//    // move; is always skipped over)
+//    // attribute names are free to change, but should always still represent
+//    // the original attributes
+//    if (newContext.numClasses() < originalContext.numClasses()) {
+//      return false; // rule 1
+//    }
+//    if (newContext.numAttributes() < originalContext.numAttributes()) {
+//      return false; // rule 2
+//    }
+//    int oPos = 0;
+//    int nPos = 0;
+//    while (oPos < originalContext.numAttributes()) {
+//      if (oPos == originalContext.classIndex()) {
+//        oPos++;
+//        if (!(oPos < originalContext.numAttributes())) {
+//          break;
+//        }
+//      }
+//      if (nPos == newContext.classIndex()) {
+//        nPos++;
+//      }
+//      if (originalContext.attribute(oPos).isNominal()) {
+//        if (!newContext.attribute(nPos).isNominal()) {
+//          return false; // rule 4
+//        }
+//        if (newContext.attribute(nPos).numValues() < originalContext
+//            .attribute(oPos).numValues()) {
+//          return false; // rule 3
+//        }
+//      } else {
+//        assert (originalContext.attribute(oPos).isNumeric());
+//        if (!newContext.attribute(nPos).isNumeric()) {
+//          return false; // rule 4
+//        }
+//      }
+//      oPos++;
+//      nPos++;
+//    }
+//    return true; // all checks clear
+//  }
 
   // reason for ...Impl methods:
   // ease programmer burden by not requiring them to remember calls to super
@@ -280,7 +280,7 @@ public abstract class AbstractClusterer extends AbstractOptionHandler
   }
 
   protected static int modelAttIndexToInstanceAttIndex(int index,
-      Instances insts) {
+      List<Instance> insts) {
     return insts.classIndex() > index ? index : index + 1;
   }
 

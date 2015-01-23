@@ -25,13 +25,15 @@ package com.yahoo.labs.samoa.learners.classifiers.ensemble;
  */
 
 import com.google.common.collect.ImmutableSet;
+
+import java.util.List;
 import java.util.Set;
 
 import com.github.javacliparser.ClassOption;
 import com.github.javacliparser.Configurable;
 import com.github.javacliparser.IntOption;
 import com.yahoo.labs.samoa.core.Processor;
-import com.yahoo.labs.samoa.instances.Instances;
+import com.yahoo.labs.samoa.instances.Instance;
 import com.yahoo.labs.samoa.learners.Learner;
 import com.yahoo.labs.samoa.learners.classifiers.SingleClassifier;
 import com.yahoo.labs.samoa.topology.Stream;
@@ -60,7 +62,7 @@ public class Boosting implements Learner, Configurable {
   protected Stream resultStream;
 
   /** The dataset. */
-  private Instances dataset;
+  private List<Instance> dataset;
 
   protected Learner classifier;
 
@@ -123,7 +125,7 @@ public class Boosting implements Learner, Configurable {
    */
 
   @Override
-  public void init(TopologyBuilder builder, Instances dataset, int parallelism) {
+  public void init(TopologyBuilder builder, List<Instance> dataset, int parallelism) {
     this.builder = builder;
     this.dataset = dataset;
     this.parallelism = parallelism;

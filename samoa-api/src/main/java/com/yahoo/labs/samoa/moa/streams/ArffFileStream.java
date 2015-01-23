@@ -26,9 +26,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.List;
 
 import com.github.javacliparser.FileOption;
 import com.github.javacliparser.IntOption;
+import com.yahoo.labs.samoa.instances.Instance;
 import com.yahoo.labs.samoa.instances.Instances;
 import com.yahoo.labs.samoa.instances.InstancesHeader;
 import com.yahoo.labs.samoa.moa.core.InputStreamProgressMonitor;
@@ -61,7 +63,7 @@ public class ArffFileStream extends AbstractOptionHandler implements InstanceStr
       "Class index of data. 0 for none or -1 for last attribute in file.",
       -1, -1, Integer.MAX_VALUE);
 
-  protected Instances instances;
+  protected List<Instance> instances;
 
   transient protected Reader fileReader;
 
@@ -93,10 +95,10 @@ public class ArffFileStream extends AbstractOptionHandler implements InstanceStr
     this.lastInstanceRead = null;
   }
 
-  @Override
-  public InstancesHeader getHeader() {
-    return new InstancesHeader(this.instances);
-  }
+//  @Override
+//  public InstancesHeader getHeader() {
+//    return new InstancesHeader(this.instances);
+//  }
 
   @Override
   public long estimatedRemainingInstances() {

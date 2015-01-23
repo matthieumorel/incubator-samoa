@@ -25,7 +25,6 @@ package com.yahoo.labs.samoa.learners;
  */
 
 import com.yahoo.labs.samoa.core.ContentEvent;
-import com.yahoo.labs.samoa.core.SerializableInstance;
 import net.jcip.annotations.Immutable;
 import com.yahoo.labs.samoa.instances.Instance;
 import java.util.LinkedList;
@@ -85,7 +84,7 @@ final public class InstancesContentEvent implements ContentEvent {
   protected List<Instance> instanceList = new LinkedList<Instance>();
 
   public void add(Instance instance) {
-    instanceList.add(new SerializableInstance(instance));
+    instanceList.add(instance);
   }
 
   /**

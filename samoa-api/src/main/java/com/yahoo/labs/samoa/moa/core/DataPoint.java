@@ -80,16 +80,16 @@ public class DataPoint extends DenseInstance {
     StringBuffer sb = new StringBuffer();
     sb.append("<html><table>");
     sb.append("<tr><td>Point</td><td>" + timestamp + "</td></tr>");
-    for (int i = 0; i < numAttributes() - 1; i++) { // m_AttValues.length
+    for (int i = 0; i < getNumAttributes(); i++) { // m_AttValues.length
       String label = "Dim " + i;
       if (i == x_dim)
         label = "<b>X</b>";
       if (i == y_dim)
         label = "<b>Y</b>";
-      sb.append("<tr><td>" + label + "</td><td>" + value(i) + "</td></tr>");
+      sb.append("<tr><td>" + label + "</td><td>" + getAttribute(i) + "</td></tr>");
     }
-    sb.append("<tr><td>Decay</td><td>" + weight() + "</td></tr>");
-    sb.append("<tr><td>True cluster</td><td>" + classValue() + "</td></tr>");
+    sb.append("<tr><td>Decay</td><td>" + getWeight() + "</td></tr>");
+    sb.append("<tr><td>True cluster</td><td>" + getLabel() + "</td></tr>");
     sb.append("</table>");
     sb.append("<br>");
     sb.append("<b>Evaluation</b><br>");
@@ -112,19 +112,17 @@ public class DataPoint extends DenseInstance {
 
   public double getDistance(DataPoint other) {
     double distance = 0.0;
-    int numDims = numAttributes();
-    if (classIndex() != 0)
-      numDims--;
+    int numDims = getNumAttributes();
 
     for (int i = 0; i < numDims; i++) {
-      double d = value(i) - other.value(i);
+      double d = getAttribute(i) - other.getAttribute(i);
       distance += d * d;
     }
     return Math.sqrt(distance);
   }
 
   public boolean isNoise() {
-    return (int) classValue() == noiseLabel;
+    return (int) getLabel() == noiseLabel;
   }
 
   public double getNoiseLabel() {

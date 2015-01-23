@@ -1,14 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.yahoo.labs.samoa.instances;
 
 /*
  * #%L
  * SAMOA
  * %%
- * Copyright (C) 2013 Yahoo! Inc.
+ * Copyright (C) 2013 - 2015 Yahoo! Inc.
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,51 +20,87 @@ package com.yahoo.labs.samoa.instances;
  * #L%
  */
 
-/**
- * 
- * @author abifet
- */
-public class DenseInstance extends SingleLabelInstance {
+import java.util.BitSet;
+import java.util.HashMap;
 
-  private static final long serialVersionUID = 280360594027716737L;
+public class DenseInstance extends AbstractInstance {
 
-  public DenseInstance() {
-    // necessary for kryo serializer
-  }
+  private static final long serialVersionUID = 6129026438277113411L;
 
-  public DenseInstance(double weight, double[] res) {
-    super(weight, res);
-  }
+  private final double[] attributeValues;
 
-  public DenseInstance(SingleLabelInstance inst) {
-    super(inst);
-  }
-
-  public DenseInstance(Instance inst) {
-    super((SingleLabelInstance) inst);
-  }
-
-  public DenseInstance(double numberAttributes) {
-    super((int) numberAttributes);
-    // super(1, new double[(int) numberAttributes-1]);
-    // Add missing values
-    // for (int i = 0; i < numberAttributes-1; i++) {
-    // //this.setValue(i, Double.NaN);
-    // }
-
+  private DenseInstance(double[] attributeValues,
+                        double label, double weight,
+                        BitSet numericAttributes, BitSet nominalAttributes, BitSet dateAttributes) {
+    super(label, weight, numericAttributes, nominalAttributes, dateAttributes);
+    this.attributeValues = attributeValues;
   }
 
   @Override
-  public String toString() {
-    StringBuffer text = new StringBuffer();
-
-    for (int i = 0; i < this.instanceInformation.numAttributes(); i++) {
-      if (i > 0)
-        text.append(",");
-      text.append(this.value(i));
-    }
-    text.append(",").append(this.weight());
-
-    return text.toString();
+  public int getNumAttributes() {
+    return attributeValues.length;
   }
+
+  @Override
+  public double getAttribute(int index) {
+    return attributeValues[index];
+  }
+
+  public double[] getAttributes() {
+    return attributeValues;
+  }
+
+
+  public static class Builder extends AbstractInstance.Builder {
+
+    private double[] attributeValues;
+
+
+
+    public Builder setAttributes(double[] attributeValues) {
+      this.attributeValues = attributeValues;
+      numericAttributes = new BitSet(attributeValues.length);
+      nominalAttributes = new BitSet(attributeValues.length);
+      dateAttributes = new BitSet(attributeValues.length);
+      return this;
+    }
+
+    public Builder setAttribute(int index, double value) {
+      attributeValues[index] = value;
+      return this;
+    }
+
+    public DenseInstance build() {
+      DenseInstance instance = new DenseInstance(attributeValues, getLabel(), getWeight(),
+              numericAttributes, nominalAttributes, dateAttributes);
+
+      return instance;
+    }
+
+    /**
+     * newBuilderFrom creates a new builder initialized with the data from the instance passed in parameter.
+     *
+     * Note that the metadata is shallow-copied
+     * 
+     * @param instance
+     * @return
+     */
+    public static Builder newBuilderFrom(DenseInstance instance) {
+      // TODO avoid duplicate code with sparse instance
+      Builder builder = new Builder();
+      builder.numericAttributes = (BitSet) instance.numericAttributes.clone();
+      builder.nominalAttributes= (BitSet) instance.nominalAttributes.clone();
+      builder.dateAttributes = (BitSet) instance.dateAttributes.clone();
+      double[] attributes = instance.getAttributes();
+      for (int i = 0; i < attributes.length; i++) {
+        builder.setAttribute(i, attributes[i]);
+        builder.setAttributeMetadata(i, instance.isNumeric(i), instance.isNominal(i), instance.isDate(i));
+      }
+      builder.setLabel(instance.getLabel());
+      builder.setWeight(instance.getWeight());
+      return builder;
+    }
+
+  }
+
 }

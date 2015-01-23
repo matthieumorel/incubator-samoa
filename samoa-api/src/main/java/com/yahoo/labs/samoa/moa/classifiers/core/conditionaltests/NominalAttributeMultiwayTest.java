@@ -20,8 +20,8 @@ package com.yahoo.labs.samoa.moa.classifiers.core.conditionaltests;
  * #L%
  */
 
-import com.yahoo.labs.samoa.instances.InstancesHeader;
 import com.yahoo.labs.samoa.instances.Instance;
+import com.yahoo.labs.samoa.moa.core.Utils;
 
 /**
  * Nominal multi way conditional test for instances to use to split nodes in Hoeffding trees.
@@ -42,17 +42,16 @@ public class NominalAttributeMultiwayTest extends InstanceConditionalTest {
   @Override
   public int branchForInstance(Instance inst) {
     int instAttIndex = this.attIndex; // < inst.classIndex() ? this.attIndex
-    // : this.attIndex + 1;
-    return inst.isMissing(instAttIndex) ? -1 : (int) inst.value(instAttIndex);
+    return Utils.isMissingValue(instAttIndex) ? -1 : (int) inst.getAttribute(instAttIndex);
   }
 
-  @Override
-  public String describeConditionForBranch(int branch, InstancesHeader context) {
-    return InstancesHeader.getAttributeNameString(context, this.attIndex)
-        + " = "
-        + InstancesHeader.getNominalValueString(context, this.attIndex,
-            branch);
-  }
+//  @Override
+//  public String describeConditionForBranch(int branch, InstancesHeader context) {
+//    return InstancesHeader.getAttributeNameString(context, this.attIndex)
+//        + " = "
+//        + InstancesHeader.getNominalValueString(context, this.attIndex,
+//            branch);
+//  }
 
   @Override
   public int maxBranches() {

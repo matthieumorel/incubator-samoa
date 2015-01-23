@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import com.yahoo.labs.samoa.core.ContentEvent;
 import com.yahoo.labs.samoa.core.Processor;
 import com.yahoo.labs.samoa.instances.Instance;
-import com.yahoo.labs.samoa.instances.Instances;
 import com.yahoo.labs.samoa.learners.InstanceContentEvent;
 import com.yahoo.labs.samoa.learners.ResultContentEvent;
 import com.yahoo.labs.samoa.learners.classifiers.rules.common.ActiveRule;
@@ -416,9 +415,9 @@ public class AMRulesAggregatorProcessor implements Processor {
     private FIMTDDNumericAttributeClassLimitObserver numericObserver;
     private int voteType;
 
-    private Instances dataset;
+    private List<Instance> dataset;
 
-    public Builder(Instances dataset) {
+    public Builder(List<Instance> dataset) {
       this.dataset = dataset;
     }
 

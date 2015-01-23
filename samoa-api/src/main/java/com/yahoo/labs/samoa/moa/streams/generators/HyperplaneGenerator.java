@@ -27,8 +27,6 @@ import com.github.javacliparser.IntOption;
 import com.yahoo.labs.samoa.instances.Attribute;
 import com.yahoo.labs.samoa.instances.DenseInstance;
 import com.yahoo.labs.samoa.instances.Instance;
-import com.yahoo.labs.samoa.instances.Instances;
-import com.yahoo.labs.samoa.instances.InstancesHeader;
 import com.yahoo.labs.samoa.moa.core.Example;
 import com.yahoo.labs.samoa.moa.core.FastVector;
 import com.yahoo.labs.samoa.moa.core.InstanceExample;
@@ -150,9 +148,9 @@ public class HyperplaneGenerator extends AbstractOptionHandler implements Instan
       classLabel = (classLabel == 0 ? 1 : 0);
     }
 
-    Instance inst = new DenseInstance(1.0, attVals);
+    Instance inst = new DenseInstance(attVals);
     inst.setDataset(getHeader());
-    inst.setClassValue(classLabel);
+    inst.setLabel(classLabel);
     addDrift();
     return new InstanceExample(inst);
   }

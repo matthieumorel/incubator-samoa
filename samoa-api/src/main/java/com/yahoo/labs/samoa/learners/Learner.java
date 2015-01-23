@@ -21,11 +21,12 @@ package com.yahoo.labs.samoa.learners;
  */
 
 import com.yahoo.labs.samoa.core.Processor;
-import com.yahoo.labs.samoa.instances.Instances;
+import com.yahoo.labs.samoa.instances.Instance;
 import com.yahoo.labs.samoa.topology.Stream;
 import com.yahoo.labs.samoa.topology.TopologyBuilder;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -45,7 +46,7 @@ public interface Learner extends Serializable {
    * @param parallelism
    *          the parallelism
    */
-  public void init(TopologyBuilder topologyBuilder, Instances dataset, int parallelism);
+  public void init(TopologyBuilder topologyBuilder, List<Instance> dataset, int parallelism);
 
   /**
    * Gets the input processing item.

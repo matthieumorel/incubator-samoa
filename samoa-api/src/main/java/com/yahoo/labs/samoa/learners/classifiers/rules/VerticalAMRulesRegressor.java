@@ -19,6 +19,7 @@ package com.yahoo.labs.samoa.learners.classifiers.rules;
  * limitations under the License.
  * #L%
  */
+import java.util.List;
 import java.util.Set;
 
 import com.github.javacliparser.ClassOption;
@@ -29,7 +30,7 @@ import com.github.javacliparser.IntOption;
 import com.github.javacliparser.MultiChoiceOption;
 import com.google.common.collect.ImmutableSet;
 import com.yahoo.labs.samoa.core.Processor;
-import com.yahoo.labs.samoa.instances.Instances;
+import com.yahoo.labs.samoa.instances.Instance;
 import com.yahoo.labs.samoa.learners.RegressionLearner;
 import com.yahoo.labs.samoa.learners.classifiers.rules.distributed.AMRulesAggregatorProcessor;
 import com.yahoo.labs.samoa.learners.classifiers.rules.distributed.AMRulesStatisticsProcessor;
@@ -142,7 +143,7 @@ public class VerticalAMRulesRegressor implements RegressionLearner, Configurable
   private Stream resultStream;
 
   @Override
-  public void init(TopologyBuilder topologyBuilder, Instances dataset, int parallelism) {
+  public void init(TopologyBuilder topologyBuilder, List<Instance> dataset, int parallelism) {
 
     this.aggregator = new AMRulesAggregatorProcessor.Builder(dataset)
         .threshold(pageHinckleyThresholdOption.getValue())

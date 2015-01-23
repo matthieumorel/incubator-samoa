@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import com.yahoo.labs.samoa.core.ContentEvent;
 import com.yahoo.labs.samoa.core.Processor;
 import com.yahoo.labs.samoa.instances.Instance;
-import com.yahoo.labs.samoa.instances.Instances;
 import com.yahoo.labs.samoa.learners.classifiers.rules.common.ActiveRule;
 import com.yahoo.labs.samoa.learners.classifiers.rules.common.RuleActiveRegressionNode;
 import com.yahoo.labs.samoa.learners.classifiers.rules.common.RulePassiveRegressionNode;
@@ -168,9 +167,9 @@ public class AMRulesStatisticsProcessor implements Processor {
 
     private int frequency;
 
-    private Instances dataset;
+    private List<Instance> dataset;
 
-    public Builder(Instances dataset) {
+    public Builder(List<Instance> dataset) {
       this.dataset = dataset;
     }
 

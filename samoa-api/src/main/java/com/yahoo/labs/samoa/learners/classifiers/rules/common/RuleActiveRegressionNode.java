@@ -162,25 +162,23 @@ public class RuleActiveRegressionNode extends RuleRegressionNode implements Rule
     // number of instances passing through the node
     nodeStatistics.addToValue(0, 1);
     // sum of y values
-    nodeStatistics.addToValue(1, inst.classValue());
+    nodeStatistics.addToValue(1, inst.getLabel());
     // sum of squared y values
-    nodeStatistics.addToValue(2, inst.classValue() * inst.classValue());
+    nodeStatistics.addToValue(2, inst.getLabel() * inst.getLabel());
 
-    for (int i = 0; i < inst.numAttributes() - 1; i++) {
-      int instAttIndex = modelAttIndexToInstanceAttIndex(i, inst);
-
+    for (int i = 0; i < inst.getNumAttributes(); i++) {
       AttributeClassObserver obs = this.attributeObservers.get(i);
       if (obs == null) {
         // At this stage all nominal attributes are ignored
-        if (inst.attribute(instAttIndex).isNumeric()) // instAttIndex
+        if (inst.getAttribute(i).isNumeric()) // instAttIndex
         {
           obs = newNumericClassObserver();
           this.attributeObservers.set(i, obs);
         }
       }
       if (obs != null) {
-        ((FIMTDDNumericAttributeClassObserver) obs).observeAttributeClass(inst.value(instAttIndex), inst.classValue(),
-            inst.weight());
+        ((FIMTDDNumericAttributeClassObserver) obs).observeAttributeClass(inst.getAttribute(i), inst.getLabel(),
+            inst.getWeight());
       }
     }
 

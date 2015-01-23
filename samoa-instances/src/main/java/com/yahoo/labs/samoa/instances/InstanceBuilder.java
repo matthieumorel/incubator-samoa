@@ -1,14 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.yahoo.labs.samoa.instances;
 
 /*
  * #%L
  * SAMOA
  * %%
- * Copyright (C) 2013 Yahoo! Inc.
+ * Copyright (C) 2013 - 2015 Yahoo! Inc.
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,32 +20,13 @@ package com.yahoo.labs.samoa.instances;
  * #L%
  */
 
-import java.io.Serializable;
+public interface InstanceBuilder {
 
-/**
- * 
- * @author abifet
- */
-public interface InstanceData extends Serializable {
+    Instance build();
 
-  public int numAttributes();
+    AbstractInstance.Builder setLabel(double label);
 
-  public double value(int instAttIndex);
+    AbstractInstance.Builder setWeight(double weight);
 
-  public boolean isMissing(int instAttIndex);
-
-  public int numValues();
-
-  public int index(int i);
-
-  public double valueSparse(int i);
-
-  public boolean isMissingSparse(int p1);
-
-  // public double value(Attribute attribute);
-
-  public double[] toDoubleArray();
-
-  public void setValue(int m_numAttributes, double d);
-
+    AbstractInstance.Builder setAttributeMetadata(int index, boolean isNumeric, boolean isNominal, boolean isDate);
 }

@@ -28,8 +28,6 @@ import com.yahoo.labs.samoa.learners.InstanceContentEvent;
 import com.yahoo.labs.samoa.core.Processor;
 import com.yahoo.labs.samoa.instances.Instance;
 import com.yahoo.labs.samoa.learners.ResultContentEvent;
-import com.yahoo.labs.samoa.instances.Instances;
-import com.yahoo.labs.samoa.instances.InstancesHeader;
 import com.yahoo.labs.samoa.learners.InstancesContentEvent;
 import com.yahoo.labs.samoa.topology.Stream;
 import java.util.LinkedList;
@@ -48,8 +46,8 @@ final class FilterProcessor implements Processor {
 
   private int processorId;
 
-  private final Instances dataset;
-  private InstancesHeader modelContext;
+  private final List<Instance> dataset;
+//  private InstancesHeader modelContext;
 
   // available streams
   private Stream outputStream;
@@ -157,13 +155,13 @@ final class FilterProcessor implements Processor {
   static class Builder {
 
     // required parameters
-    private final Instances dataset;
+    private final List<Instance> dataset;
 
     private int delay = 0;
 
     private int batchSize = 200;
 
-    Builder(Instances dataset) {
+    Builder(List<Instance> dataset) {
       this.dataset = dataset;
     }
 

@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import com.yahoo.labs.samoa.core.ContentEvent;
 import com.yahoo.labs.samoa.core.Processor;
 import com.yahoo.labs.samoa.instances.Instance;
-import com.yahoo.labs.samoa.instances.Instances;
 import com.yahoo.labs.samoa.learners.InstanceContentEvent;
 import com.yahoo.labs.samoa.moa.streams.InstanceStream;
 import com.yahoo.labs.samoa.topology.Stream;
@@ -183,13 +182,13 @@ public class StreamSourceProcessor implements Processor {
     return false;
   }
 
-  /**
-   * Gets the dataset.
-   * 
-   * @return the dataset
-   */
-  public Instances getDataset() {
-    return firstInstance.dataset();
-  }
+//  /**
+//   * Gets the dataset.
+//   *
+//   * @return the dataset
+//   */
+//  public Instances getDataset() {
+//    return firstInstance.dataset();
+//  }
 
 }

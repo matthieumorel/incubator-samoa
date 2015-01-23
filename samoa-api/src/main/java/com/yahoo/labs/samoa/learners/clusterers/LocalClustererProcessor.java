@@ -132,7 +132,8 @@ final public class LocalClustererProcessor implements Processor {
       Clustering clustering = ev.getClustering();
 
       for (int i = 0; i < clustering.size(); i++) {
-        instance = new DenseInstance(1.0, clustering.get(i).getCenter());
+
+        instance = new DenseInstance(clustering.get(i).getCenter());
         instance.setDataset(model.getDataset());
         DataPoint point = new DataPoint(instance, Integer.parseInt(event.getKey()));
         model.trainOnInstance(point);

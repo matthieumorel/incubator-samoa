@@ -21,8 +21,9 @@ package com.yahoo.labs.samoa.learners;
  */
 
 import com.yahoo.labs.samoa.core.ContentEvent;
-import com.yahoo.labs.samoa.core.SerializableInstance;
 import com.yahoo.labs.samoa.instances.Instance;
+import com.yahoo.labs.samoa.instances.InstanceBuilder;
+import com.yahoo.labs.samoa.instances.Utils;
 
 /**
  * License
@@ -40,7 +41,7 @@ final public class ResultContentEvent implements ContentEvent {
   private long instanceIndex;
   private int classifierIndex;
   private int evaluationIndex;
-  private SerializableInstance instance;
+  private Instance instance;
 
   private int classId;
   private double[] classVotes;
@@ -70,7 +71,7 @@ final public class ResultContentEvent implements ContentEvent {
   public ResultContentEvent(long instanceIndex, Instance instance, int classId,
       double[] classVotes, boolean isLast) {
     if (instance != null) {
-      this.instance = new SerializableInstance(instance);
+      this.instance = Utils.newBuilderFrom(instance).build();
     }
     this.instanceIndex = instanceIndex;
     this.classId = classId;
@@ -83,7 +84,7 @@ final public class ResultContentEvent implements ContentEvent {
    * 
    * @return single instance of ResultEvent
    */
-  public SerializableInstance getInstance() {
+  public Instance getInstance() {
     return instance;
   }
 
@@ -93,7 +94,7 @@ final public class ResultContentEvent implements ContentEvent {
    * @param instance
    *          the new instance
    */
-  public void setInstance(SerializableInstance instance) {
+  public void setInstance(Instance instance) {
     this.instance = instance;
   }
 

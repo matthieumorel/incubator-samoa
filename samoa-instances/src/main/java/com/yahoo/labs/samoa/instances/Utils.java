@@ -21,6 +21,24 @@ package com.yahoo.labs.samoa.instances;
  */
 
 public class Utils {
+
+  // TODO move to more meaningful class
+
+  /**
+   * Creates a copy of an instance
+   */
+  public static InstanceBuilder newBuilderFrom(Instance instance) {
+    if (instance instanceof DenseInstance) {
+      return DenseInstance.Builder.newBuilderFrom((DenseInstance) instance);
+    } else {
+      return SparseInstance.Builder.newBuilderFrom((SparseInstance) instance);
+    }
+  }
+
+  public static boolean isMissing(Instance inst, int attributeIndex) {
+    return Double.isNaN(inst.getAttribute(attributeIndex));
+  }
+
   public static int maxIndex(double[] doubles) {
 
     double maximum = 0;

@@ -22,6 +22,8 @@ package com.yahoo.labs.samoa.moa.cluster;
 
 import com.yahoo.labs.samoa.instances.DenseInstance;
 import com.yahoo.labs.samoa.instances.Instance;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -76,7 +78,7 @@ public class SphereCluster extends Cluster {
     mb.clear();
 
     for (Instance instance : instances) {
-      mb.check_in(instance.toDoubleArray());
+      mb.check_in(Arrays.copyOf(instance.getAttributes(), instance.getAttributes().length));
     }
 
     mb.build();
@@ -238,7 +240,7 @@ public class SphereCluster extends Cluster {
     // get the center through getCenter so subclass have a chance
     double[] center = getCenter();
     for (int i = 0; i < center.length; i++) {
-      double d = center[i] - instance.value(i);
+      double d = center[i] - instance.getAttribute(i);
       distance += d * d;
     }
     return Math.sqrt(distance);
@@ -295,7 +297,7 @@ public class SphereCluster extends Cluster {
   }
 
   public double[] getDistanceVector(Instance instance) {
-    return distanceVector(getCenter(), instance.toDoubleArray());
+    return distanceVector(getCenter(), Arrays.copyOf(instance.getAttributes(), instance.getAttributes().length));
   }
 
   public double[] getDistanceVector(SphereCluster other) {
@@ -350,7 +352,7 @@ public class SphereCluster extends Cluster {
     // Last value uses only sines
     res[dimensions - 1] = center[dimensions - 1] + length * sin[dimensions - 2];
 
-    return new DenseInstance(1.0, res);
+    return new DenseInstance.Builder().setAttributes(res).build();
   }
 
   @Override

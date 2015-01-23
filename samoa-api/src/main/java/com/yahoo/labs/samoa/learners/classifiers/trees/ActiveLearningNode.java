@@ -81,14 +81,14 @@ final class ActiveLearningNode extends LearningNode {
       this.thrownAwayInstance++;
       return;
     }
-    this.observedClassDistribution.addToValue((int) inst.classValue(),
-        inst.weight());
+    this.observedClassDistribution.addToValue((int) inst.getLabel(),
+        inst.getWeight());
     // done: parallelize by sending attributes one by one
     // TODO: meanwhile, we can try to use the ThreadPool to execute it
     // separately
     // TODO: parallelize by sending in batch, i.e. split the attributes into
     // chunk instead of send the attribute one by one
-    for (int i = 0; i < inst.numAttributes() - 1; i++) {
+    for (int i = 0; i < inst.getNumAttributes() - 1; i++) {
       int instAttIndex = modelAttIndexToInstanceAttIndex(i, inst);
       Integer obsIndex = i;
       String key = attributeContentEventKeys.get(obsIndex);
@@ -99,13 +99,13 @@ final class ActiveLearningNode extends LearningNode {
       }
       AttributeContentEvent ace = new AttributeContentEvent.Builder(
           this.id, i, key)
-          .attrValue(inst.value(instAttIndex))
-          .classValue((int) inst.classValue())
-          .weight(inst.weight())
-          .isNominal(inst.attribute(instAttIndex).isNominal())
+          .attrValue(inst.getAttribute(instAttIndex))
+          .classValue((int) inst.getLabel())
+          .weight(inst.getWeight())
+          .isNominal(inst.getAttribute(instAttIndex).isNominal())
           .build();
       if (this.attributeBatchContentEvent == null) {
-        this.attributeBatchContentEvent = new AttributeBatchContentEvent[inst.numAttributes() - 1];
+        this.attributeBatchContentEvent = new AttributeBatchContentEvent[inst.getNumAttributes() - 1];
       }
       if (this.attributeBatchContentEvent[i] == null) {
         this.attributeBatchContentEvent[i] = new AttributeBatchContentEvent.Builder(
@@ -113,7 +113,7 @@ final class ActiveLearningNode extends LearningNode {
             // .attrValue(inst.value(instAttIndex))
             // .classValue((int) inst.classValue())
             // .weight(inst.weight()]
-            .isNominal(inst.attribute(instAttIndex).isNominal())
+            .isNominal(inst.getAttribute(instAttIndex).isNominal())
             .build();
       }
       this.attributeBatchContentEvent[i].add(ace);
@@ -195,7 +195,7 @@ final class ActiveLearningNode extends LearningNode {
   }
 
   private static int modelAttIndexToInstanceAttIndex(int index, Instance inst) {
-    return inst.classIndex() > index ? index : index + 1;
+    return inst.getLabel() > index ? index : index + 1;
   }
 
   private String generateKey(int obsIndex) {

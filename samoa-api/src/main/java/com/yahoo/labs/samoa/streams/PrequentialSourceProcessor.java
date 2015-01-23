@@ -32,7 +32,6 @@ import com.yahoo.labs.samoa.core.ContentEvent;
 import com.yahoo.labs.samoa.core.EntranceProcessor;
 import com.yahoo.labs.samoa.core.Processor;
 import com.yahoo.labs.samoa.instances.Instance;
-import com.yahoo.labs.samoa.instances.Instances;
 import com.yahoo.labs.samoa.learners.InstanceContentEvent;
 import com.yahoo.labs.samoa.moa.options.AbstractOptionHandler;
 import com.yahoo.labs.samoa.moa.streams.InstanceStream;
@@ -165,12 +164,12 @@ public final class PrequentialSourceProcessor implements EntranceProcessor {
     this.sourceStream = stream;
   }
 
-  public Instances getDataset() {
-    if (firstInstance == null) {
-      initStreamSource(sourceStream);
-    }
-    return firstInstance.dataset();
-  }
+//  public Instances getDataset() {
+//    if (firstInstance == null) {
+//      initStreamSource(sourceStream);
+//    }
+//    return firstInstance.dataset();
+//  }
 
   private Instance nextInstance() {
     if (this.isInited) {

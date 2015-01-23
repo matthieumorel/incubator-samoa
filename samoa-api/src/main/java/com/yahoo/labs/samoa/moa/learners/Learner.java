@@ -110,21 +110,21 @@ public interface Learner<E extends Example> extends MOAObject, OptionHandler {
    */
   public MOAObject getModel();
 
-  /**
-   * Sets the reference to the header of the data stream. The header of the data stream is extended from WEKA
-   * <code>Instances</code>. This header is needed to know the number of classes and attributes
-   * 
-   * @param ih
-   *          the reference to the data stream header
-   */
-  public void setModelContext(InstancesHeader ih);
-
-  /**
-   * Gets the reference to the header of the data stream. The header of the data stream is extended from WEKA
-   * <code>Instances</code>. This header is needed to know the number of classes and attributes
-   * 
-   * @return the reference to the data stream header
-   */
-  public InstancesHeader getModelContext();
+//  /**
+//   * Sets the reference to the header of the data stream. The header of the data stream is extended from WEKA
+//   * <code>Instances</code>. This header is needed to know the number of classes and attributes
+//   *
+//   * @param ih
+//   *          the reference to the data stream header
+//   */
+//  public void setModelContext(InstancesHeader ih);
+//
+//  /**
+//   * Gets the reference to the header of the data stream. The header of the data stream is extended from WEKA
+//   * <code>Instances</code>. This header is needed to know the number of classes and attributes
+//   *
+//   * @return the reference to the data stream header
+//   */
+//  public InstancesHeader getModelContext();
 
 }

@@ -1,14 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.yahoo.labs.samoa.instances;
 
 /*
  * #%L
  * SAMOA
  * %%
- * Copyright (C) 2013 Yahoo! Inc.
+ * Copyright (C) 2013 - 2015 Yahoo! Inc.
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,27 +20,110 @@ package com.yahoo.labs.samoa.instances;
  * #L%
  */
 
-/**
- * 
- * @author abifet
- */
-public class SparseInstance extends SingleLabelInstance {
+import java.util.BitSet;
+import java.util.HashMap;
+import java.util.Map;
 
-  public SparseInstance(double d, double[] res) {
-    super(d, res);
+public class SparseInstance extends AbstractInstance {
+
+  private static final long serialVersionUID = 2978800297651832155L;
+
+  private final Map<Integer, Double> attributes;
+  private final int numAttributes;
+
+  /**
+   * @param attributes
+   *          map of attributes: index - value
+   * @param numAttributes
+   *          total number of attributes (usually more than the size of {@link #attributes} for a sparse instance)
+   */
+  private SparseInstance(Map<Integer, Double> attributes, int numAttributes,
+      double label, double weight,
+      BitSet numericAttributes, BitSet nominalAttributes, BitSet dateAttributes) {
+    super(label, weight, numericAttributes, nominalAttributes, dateAttributes);
+    this.attributes = attributes;
+    this.numAttributes = numAttributes;
   }
 
-  public SparseInstance(SingleLabelInstance inst) {
-    super(inst);
+  @Override
+  public int getNumAttributes() {
+    return numAttributes;
   }
 
-  public SparseInstance(double numberAttributes) {
-    // super(1, new double[(int) numberAttributes-1]);
-    super(1, null, null, (int) numberAttributes);
+  @Override
+  public double getAttribute(int index) {
+    Double value = attributes.get(index);
+    if (value == null) {
+      return 0;
+    } else {
+      return value;
+    }
   }
 
-  public SparseInstance(double weight, double[] attributeValues, int[] indexValues, int numberAttributes) {
-    super(weight, attributeValues, indexValues, numberAttributes);
+  @Override
+  public double[] getAttributes() {
+    double[] result = new double[getNumAttributes()];
+    for (int i = 0; i < result.length; i++) {
+      Double value = attributes.get(i);
+      if (value == null) {
+        result[i] = 0;
+      } else {
+        result[i] = value;
+      }
+    }
+    return result;
   }
 
+  public static class Builder extends AbstractInstance.Builder {
+
+    private Map<Integer, Double> attributes = new HashMap<>();
+    private int numAttributes;
+
+    public Builder setAttribute(Integer index, Double value) {
+      attributes.put(index, value);
+      return this;
+    }
+
+    public Builder numAttributes(int num) {
+      this.numAttributes = num;
+      return this;
+    }
+
+    public Builder addAttributes(Map<Integer, Double> a) {
+      attributes.putAll(a);
+      return this;
+    }
+
+    public SparseInstance build() {
+      SparseInstance instance = new SparseInstance(attributes, numAttributes,
+          getLabel(), getWeight(),
+          numericAttributes, nominalAttributes, dateAttributes);
+      return instance;
+    }
+
+    /**
+     * newBuilderFrom creates a new builder initialized with the data from the instance passed in parameter.
+     *
+     * Note that the metadata is shallow-copied
+     * 
+     * @param instance
+     * @return
+     */
+    public static Builder newBuilderFrom(SparseInstance instance) {
+      Builder builder = new Builder();
+      builder.numericAttributes = (BitSet) instance.numericAttributes.clone();
+      builder.nominalAttributes = (BitSet) instance.nominalAttributes.clone();
+      builder.dateAttributes = (BitSet) instance.dateAttributes.clone();
+
+      double[] attributes = instance.getAttributes();
+      builder.numAttributes(attributes.length);
+      for (int i = 0; i < attributes.length; i++) {
+        builder.setAttribute(i, attributes[i]);
+        builder.setAttributeMetadata(i, instance.isNumeric(i), instance.isNominal(i), instance.isDate(i));
+      }
+      builder.setLabel(instance.getLabel());
+      builder.setWeight(instance.getWeight());
+      return builder;
+    }
+  }
 }

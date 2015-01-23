@@ -32,7 +32,6 @@ import com.yahoo.labs.samoa.moa.cluster.Clustering;
 import com.yahoo.labs.samoa.moa.cluster.SphereCluster;
 import com.yahoo.labs.samoa.moa.core.AutoExpandVector;
 import com.yahoo.labs.samoa.moa.core.InstanceExample;
-import com.yahoo.labs.samoa.instances.InstancesHeader;
 import com.yahoo.labs.samoa.moa.core.ObjectRepository;
 import com.yahoo.labs.samoa.moa.core.DataPoint;
 import com.github.javacliparser.FlagOption;
@@ -42,9 +41,7 @@ import com.yahoo.labs.samoa.moa.streams.InstanceStream;
 import com.yahoo.labs.samoa.moa.tasks.TaskMonitor;
 import com.yahoo.labs.samoa.instances.Attribute;
 import com.yahoo.labs.samoa.instances.DenseInstance;
-import com.yahoo.labs.samoa.moa.core.FastVector;
 import com.yahoo.labs.samoa.instances.Instance;
-import com.yahoo.labs.samoa.instances.Instances;
 
 public class RandomRBFGeneratorEvents extends ClusteringStream {
   private transient Vector listeners;
@@ -105,7 +102,7 @@ public class RandomRBFGeneratorEvents extends ClusteringStream {
 
   private AutoExpandVector<GeneratorCluster> kernels;
   protected Random instanceRandom;
-  protected InstancesHeader streamHeader;
+//  protected InstancesHeader streamHeader;
   private int numGeneratedInstances;
   private int numActiveKernels;
   private int nextEventCounter;
@@ -461,9 +458,9 @@ public class RandomRBFGeneratorEvents extends ClusteringStream {
     // eventMergeSplitOption.set();
   }
 
-  public InstancesHeader getHeader() {
-    return streamHeader;
-  }
+//  public InstancesHeader getHeader() {
+//    return streamHeader;
+//  }
 
   public long estimatedRemainingInstances() {
     return -1;
@@ -511,8 +508,8 @@ public class RandomRBFGeneratorEvents extends ClusteringStream {
       classLabels.add("noise"); // The last label = "noise"
 
     attributes.add(new Attribute("class", classLabels));
-    streamHeader = new InstancesHeader(new Instances(getCLICreationString(InstanceStream.class), attributes, 0));
-    streamHeader.setClassIndex(streamHeader.numAttributes() - 1);
+//    streamHeader = new InstancesHeader(new Instances(getCLICreationString(InstanceStream.class), attributes, 0));
+//    streamHeader.setClassIndex(streamHeader.numAttributes() - 1);
   }
 
   protected void initKernels() {
@@ -535,7 +532,7 @@ public class RandomRBFGeneratorEvents extends ClusteringStream {
 
     if (instanceRandom.nextDouble() > noiseLevelOption.getValue()) {
       clusterChoice = chooseWeightedElement();
-      values = kernels.get(clusterChoice).generator.sample(instanceRandom).toDoubleArray();
+      values = kernels.get(clusterChoice).generator.sample(instanceRandom).getAttributes();
     }
     else {
       // get ranodm noise point
@@ -547,8 +544,8 @@ public class RandomRBFGeneratorEvents extends ClusteringStream {
     }
     System.arraycopy(values, 0, values_new, 0, values.length);
 
-    Instance inst = new DenseInstance(1.0, values_new);
-    inst.setDataset(getHeader());
+    Instance inst = new DenseInstance.Builder().setAttributes(values_new).build();
+//    inst.setDataset(getHeader());
     if (clusterChoice == -1) {
       // 2013/06/02 (Yunsu Kim)
       // Noise instance has the last class value instead of "-1"
@@ -867,7 +864,7 @@ public class RandomRBFGeneratorEvents extends ClusteringStream {
         counter--;
         for (int c = 0; c < kernels.size(); c++) {
           for (int m = 0; m < kernels.get(c).microClusters.size(); m++) {
-            Instance inst = new DenseInstance(1, sample);
+            Instance inst = new DenseInstance.Builder().setAttributes(sample).build();
             if (kernels.get(c).microClusters.get(m).getInclusionProbability(inst) > 0) {
               incluster = true;
               break;

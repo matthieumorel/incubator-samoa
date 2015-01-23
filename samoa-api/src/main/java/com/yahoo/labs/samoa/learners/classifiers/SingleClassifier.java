@@ -25,12 +25,14 @@ package com.yahoo.labs.samoa.learners.classifiers;
  */
 
 import com.google.common.collect.ImmutableSet;
+
+import java.util.List;
 import java.util.Set;
 
 import com.github.javacliparser.ClassOption;
 import com.github.javacliparser.Configurable;
 import com.yahoo.labs.samoa.core.Processor;
-import com.yahoo.labs.samoa.instances.Instances;
+import com.yahoo.labs.samoa.instances.Instance;
 import com.yahoo.labs.samoa.learners.AdaptiveLearner;
 import com.yahoo.labs.samoa.learners.Learner;
 import com.yahoo.labs.samoa.moa.classifiers.core.driftdetection.ChangeDetector;
@@ -50,7 +52,7 @@ public final class SingleClassifier implements Learner, AdaptiveLearner, Configu
 
   private Stream resultStream;
 
-  private Instances dataset;
+  private List<Instance> dataset;
 
   public ClassOption learnerOption = new ClassOption("learner", 'l',
       "Classifier to train.", LocalLearner.class, SimpleClassifierAdapter.class.getName());
@@ -60,7 +62,7 @@ public final class SingleClassifier implements Learner, AdaptiveLearner, Configu
   private int parallelism;
 
   @Override
-  public void init(TopologyBuilder builder, Instances dataset, int parallelism) {
+  public void init(TopologyBuilder builder, List<Instance> dataset, int parallelism) {
     this.builder = builder;
     this.dataset = dataset;
     this.parallelism = parallelism;
